@@ -19,6 +19,7 @@
     "webfontloader": "^1.0.0"
   },
   "devDependencies": {
+    "@prettier/plugin-pug": "^2.4.1",
     "@types/node": "^18.11.9",
     "@types/webfontloader": "^1.6.35",
     "@vitejs/plugin-vue": "^3.0.3",
@@ -26,6 +27,7 @@
     "@vue/eslint-config-typescript": "^11.0.0",
     "eslint": "^8.22.0",
     "eslint-plugin-vue": "^9.3.0",
+    "prettier": "^2.8.4",
     "pug": "^3.0.2",
     "pug-plain-loader": "^1.1.0",
     "sass": "^1.55.0",
