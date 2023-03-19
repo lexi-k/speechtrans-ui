@@ -6,6 +6,7 @@
 
 // Components
 import App from './App.vue'
+import EditChunk from './components/EditChunk.vue'
 
 // Composables
 import { createApp } from 'vue'
@@ -14,6 +15,7 @@ import { createApp } from 'vue'
 import { registerPlugins } from '@/plugins'
 
 const app = createApp(App)
+app.component('EditChunk', EditChunk);
 
 registerPlugins(app)
 

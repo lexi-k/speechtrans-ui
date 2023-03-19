@@ -1,67 +1,37 @@
 <template lang="pug">
-v-app-bar(color="#434c5e", prominent)
+v-app-bar(color="primary", prominent)
 	//- v-app-bar-nav-icon
-	v-toolbar-title(style="color: #88c0d0") Speech Translator
+	v-toolbar-title(style="color: darkyello") Hermes
 	v-container(style="max-width: 1000px")
 		v-row(align="center", justify="end")
 			v-col
 				v-select.test(
 					label="Select input language",
-					variant="solo",
-					density="compact",
 					v-model="language",
 					:items="languages",
+					variant="solo",
+					density="compact",
 					:style="{ padding: '20px 5px 0 0', maxWidth: '230px' }"
 				)
 					template(v-slot:prepend)
-						v-icon(color="#ebcb8b") mdi-translate
+						v-icon mdi-translate
 
 			v-col
-				v-checkbox.testchck(
-					label="OCR",
-					color="#a3be8c",
-					style="margin-top: 20px"
-				)
-					template(v-slot:label)
-						div(style="color: white") OCR
+				v-spacer
 
 			v-col
 				v-btn.testbtn(variant="flat", prepend-icon="mdi-play-pause") Translate
-	//- v-btn(variant="text", icon="mdi-cog", @click.stop="drawer = !drawer")
-	//- v-btn(variant="text", icon="mdi-dots-vertical")
 
-//- v-dialog(v-model="drawer")
-//- 	v-container(:style="{backgroundColor: 'white', borderRadius: '3px'}")
-//- 		v-row
-//- 			v-col(cols="9", sm="3")
-//- 				v-select(
-//- 					label="Select input language",
-//- 					variant="solo",
-//- 					v-model="language",
-//- 					:items="languages",
-//- 					append-icon="mdi-translate",
-//- 				)
 </template>
 
-<style>
-.test .v-field {
-	background-color: #eceff4;
-}
-
-.testbtn {
-	background-color: #eceff4;
-}
-
-.testchck .v-selection-control__wrapper {
-	color: #bf616a;
-}
-</style>
-
 <script lang="ts">
+import "@/styles/home.scss";
+import { useOcrStore } from "@/store/ocr";
+
+
 export default {
 	data: () => ({
-		drawer: false,
-		group: null,
+		ocrStore: useOcrStore(),
 		language: "Czech",
 		languages: [
 			"Afrikaans",
@@ -165,11 +135,5 @@ export default {
 			"Yoruba",
 		],
 	}),
-
-	watch: {
-		group() {
-			this.drawer = false;
-		},
-	},
 };
 </script>
