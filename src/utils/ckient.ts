@@ -1,4 +1,4 @@
-import { AudioData, TextChunk, TextChunkVersions, AudioChunk } from "./chunk";
+import { TextChunk, TextChunkVersions, AudioChunk } from "./chunk";
 
 class AsrClient {
 	baseUrl: string;
