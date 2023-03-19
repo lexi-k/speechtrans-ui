@@ -5,14 +5,14 @@ v-btn(color="primary", @click="checkDiff") Save
 </template>
 
 <script lang="ts">
-import { Chunk } from "@/utils/chunk";
+import { TextChunk } from "@/utils/chunk";
 import type { PropType } from "vue";
 import "@/styles/editChunk.scss";
 
 export default {
 	props: {
 		chunk: {
-			type: Object as PropType<Chunk>,
+			type: Object as PropType<TextChunk>,
 			required: true,
 		},
 	},

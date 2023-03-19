@@ -4,7 +4,7 @@ EditChunk(:chunk="chunk1")
 </template>
 
 <script lang="ts">
-import { Chunk } from "@/utils/chunk";
+import { TextChunk } from "@/utils/chunk";
 import EditChunk from "@/components/EditChunk.vue";
 
 import { useOcrStore } from "@/store/ocr";
@@ -17,12 +17,12 @@ export default {
 			timestamp: 0,
 			version: 0,
 			text: "Hello, my name is <span style='color: red'>John.</span>&nbsp;",
-		} as Chunk,
+		} as TextChunk,
         chunk1: {
 			timestamp: 0,
 			version: 0,
 			text: "Hello, my name is John.",
-		} as Chunk,
+		} as TextChunk,
 	}),
 };
 </script>
