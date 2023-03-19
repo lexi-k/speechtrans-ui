@@ -4,11 +4,16 @@ class AsrClient {
 	baseUrl: string;
 	headers: Headers;
 	session: string;
-	constructor(
-		additionalHeaders?: HeadersInit,
-		sessionId: string = "default"
-	) {
-		this.baseUrl = "http://slt.ufal.mff.cuni.cz:5003";
+	constructor({
+		baseUrl,
+		additionalHeaders,
+		sessionId = "default",
+	}: {
+		baseUrl: string;
+		additionalHeaders?: HeadersInit;
+		sessionId?: string;
+	}) {
+		this.baseUrl = baseUrl;
 
 		this.session = `?session_id=${sessionId}`;
 
@@ -60,3 +65,5 @@ class AsrClient {
 		} as TextChunk;
 	}
 }
+
+export default AsrClient;
