@@ -1,15 +1,23 @@
-import { TextChunk, TextChunkVersions, AudioChunk } from "./chunk";
+import {
+	TextChunk,
+	TextChunkVersions,
+	AudioChunk,
+	TextChunksUpdate,
+} from "./chunk";
+import fetchRetry from "fetch-retry";
+
+const retryingFetch = fetchRetry(fetch);
 
 class AsrClient {
 	baseUrl: string;
 	headers: Headers;
 	session: string;
 	constructor({
-		baseUrl,
+		baseUrl = "http://slt.ufal.mff.cuni.cz:5003",
 		additionalHeaders,
 		sessionId = "default",
 	}: {
-		baseUrl: string;
+		baseUrl?: string;
 		additionalHeaders?: HeadersInit;
 		sessionId?: string;
 	}) {
@@ -21,22 +29,33 @@ class AsrClient {
 		this.headers.append("Content-Type", "application/json");
 	}
 
-	async get(api: string, payload: object = {}) {
-		const response = await fetch(this.baseUrl + api + this.session, {
-			method: "GET",
-			headers: this.headers,
-			body: JSON.stringify(payload),
-		});
-		return response.json();
+	async get(api: string) {
+		const response = await retryingFetch(
+			this.baseUrl + api + this.session,
+			{
+				retries: 3,
+				retryDelay: 1000,
+				method: "GET",
+				headers: this.headers,
+			}
+		);
+		if (response.ok) return response.json();
+		else console.log(response.statusText);
 	}
 
 	async post(api: string, payload: object = {}) {
-		const response = await fetch(this.baseUrl + api + this.session, {
-			method: "POST",
-			headers: this.headers,
-			body: JSON.stringify(payload),
-		});
-		return response.json();
+		const response = await retryingFetch(
+			this.baseUrl + api + this.session,
+			{
+				retries: 3,
+				retryDelay: 1000,
+				method: "POST",
+				headers: this.headers,
+				body: JSON.stringify(payload),
+			}
+		);
+		if (response.ok) return response.json();
+		else console.error(response.statusText);
 	}
 
 	async submitAudioChunk(audioChunk: AudioChunk) {
@@ -44,7 +63,7 @@ class AsrClient {
 		return res;
 	}
 
-	async getLatestTextChunksVersions() {
+	async getLatestTextChunkVersions() {
 		const res = await this.get("/get_latest_text_chunk_versions");
 		return res.versions as TextChunkVersions;
 	}
@@ -53,7 +72,12 @@ class AsrClient {
 		const res = await this.post("/get_latest_text_chunks", {
 			versions: chunkVersions,
 		});
-		return res.text_chunks as TextChunk[];
+		const update = {
+			textChunks: res.text_chunks,
+			versions: res.versions,
+		} as TextChunksUpdate;
+
+		return update;
 	}
 
 	async updateTextChunk(chunk: TextChunk) {

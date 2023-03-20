@@ -1,6 +1,6 @@
 <template lang="pug">
 v-card.container
-	.editChunk(contenteditable="true"  @input="onInput" v-html="chunk.text")
+	.editChunk(contenteditable="true", @input="onInput", v-html="chunk.text")
 v-btn(color="primary", @click="checkDiff") Save
 </template>
 
@@ -16,10 +16,12 @@ export default {
 			required: true,
 		},
 	},
-	data: () => ({
-		originalText: "" as string,
-		updatedText: "" as string,
-	}),
+	data() {
+		return {
+			originalText: "" as string,
+			updatedText: "" as string,
+		};
+	},
 
 	methods: {
 		checkDiff() {
@@ -31,6 +33,9 @@ export default {
 		},
 		onInput(e: any) {
 			this.updatedText = e.target.innerHTML;
+			// TODO: Change color
+			// TODO: Display *original* in some kind of dropdown
+			// TODO: Maybe wait some time and autosubmit with an option to cancle
 		},
 	},
 
