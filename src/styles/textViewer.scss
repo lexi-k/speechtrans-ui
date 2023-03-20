@@ -1,7 +1,14 @@
 .translation {
-	padding: 100px;
+    margin-top: 25px;
+	padding: 10px;
     font-family: Arial, Helvetica, sans-serif;
     color: #262626;
-    font-size: 42px;
     line-height: 1.2;
+    overflow-y: scroll;
+    max-height: 92vh;
+}
+
+.editor {
+    overflow-y: scroll;
+    max-height: 92vh;
 }

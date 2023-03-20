@@ -26,12 +26,9 @@ v-app-bar(color="primary", prominent)
 
 <script lang="ts">
 import "@/styles/home.scss";
-import { useOcrStore } from "@/store/ocr";
-
 
 export default {
 	data: () => ({
-		ocrStore: useOcrStore(),
 		language: "Czech",
 		languages: [
 			"Afrikaans",

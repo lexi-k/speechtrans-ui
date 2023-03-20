@@ -25,10 +25,6 @@ const routes = [
 		path: "/recorder",
 		component: () => import("@/views/Recorder.vue"),
 	},
-	{
-		path: "/editor",
-		component: () => import("@/views/Editor.vue"),
-	},
 ];
 
 const router = createRouter({
