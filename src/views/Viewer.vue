@@ -1,11 +1,14 @@
 <template lang="pug">
-//- text-viewer(:fontSize=42, :client="client", :textChunks="textChunks")
 v-container
-	v-row
+	v-row(v-if="editorMode")
+		v-btn.toggleEditor(icon="mdi-text-box-outline" @click="editorMode = !editorMode")
 		v-col
-			text-editor.editor(:textChunks="textChunks")
+			text-editor.editing(:textChunks="textChunks")
 		v-col
-			text-viewer(:fontSize=17, :client="client", :textChunks="textChunks")
+			text-viewer.editing(:fontSize=17, :client="client", :textChunks="textChunks")
+	v-row(v-else)
+		v-btn.toggleEditor(icon="mdi-pencil-outline" @click="editorMode = !editorMode")
+		text-viewer.viewing(:fontSize=42, :client="client", :textChunks="textChunks")
 </template>
 
 <script lang="ts">
@@ -22,6 +25,7 @@ export default {
 			textChunks: [] as TextChunk[],
 			updateTextInterval: 1000,
 			intervalId: Number,
+			editorMode: false,
 		};
 	},
 

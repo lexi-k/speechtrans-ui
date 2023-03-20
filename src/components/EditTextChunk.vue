@@ -10,13 +10,13 @@ v-card.container
 	v-btn.submitChanges(
 		v-if="showSubmit",
 		size="small",
-		color="#18A558",
+		color="#188B61",
 		@click="checkDiff"
 	) Submit
 	v-btn.discardChanges(
 		v-if="showSubmit",
 		size="small",
-		color="#BA0F30",
+		color="#bd3f4f",
 		@click="discardChanges"
 	) Discard
 </template>
@@ -63,20 +63,20 @@ export default {
 			else this.showSubmit = false;
 			// TODO: Change color
 			// TODO: Display *original* in some kind of dropdown
-			// TODO: Maybe wait some time and autosubmit with an option to cancle
 		},
 		highlightFocused(e: any) {
 			this.chunk.text =
-				"<span style='color: red'>" + this.chunk.text + "</span>";
+				"<span style='background-color: #E0D64E; color: black'>" + this.chunk.text + "</span>";
 		},
 		unhighlightFocused(e: any) {
 			this.chunk.text = this.chunk.text
-				.replace("<span style='color: red'>", "")
+				.replace("<span style='background-color: #E0D64E; color: black'>", "")
 				.replace("</span>", "");
 		},
 		discardChanges() {
 			// TODO: fix thi hack
 			this.originalText = this.originalText + " ";
+			this.showSubmit = false;
 		}
 	},
 
