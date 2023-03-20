@@ -11,7 +11,7 @@ v-card.container
 		v-if="showSubmit",
 		size="small",
 		color="#188B61",
-		@click="checkDiff"
+		@click="submitTextChunk"
 	) Submit
 	v-btn.discardChanges(
 		v-if="showSubmit",
@@ -46,19 +46,23 @@ export default {
 		};
 	},
 	methods: {
-		checkDiff() {
+		submitTextChunk() {
 			if (this.updatedText !== this.originalText) {
-				this.chunk.version += 1;
 				// this.originalText =
 				// 	"<span style='color: red'>" + this.updatedText + "</span>";
 				// TODO: Diff this
-				console.log(this.originalText);
+				this.client.updateTextChunk({
+					timestamp: this.chunk.timestamp,
+					version: this.chunk.version,
+					text: this.updatedText,
+				} as TextChunk);
 				this.showSubmit = false;
 			}
 		},
 		onInput(e: any) {
 			this.updatedText = e.target.innerHTML;
-
+			console.log(this.updatedText)
+			console.log(this.originalText)
 			if (this.updatedText != this.originalText) this.showSubmit = true;
 			else this.showSubmit = false;
 			// TODO: Change color
@@ -66,18 +70,24 @@ export default {
 		},
 		highlightFocused(e: any) {
 			this.chunk.text =
-				"<span style='background-color: #E0D64E; color: black'>" + this.chunk.text + "</span>";
+				"<span style='background-color: #E0D64E; color: black'>" +
+				this.chunk.text +
+				"</span>";
 		},
 		unhighlightFocused(e: any) {
 			this.chunk.text = this.chunk.text
-				.replace("<span style='background-color: #E0D64E; color: black'>", "")
+				.replace(
+					"<span style='background-color: #E0D64E; color: black'>",
+					""
+				)
 				.replace("</span>", "");
 		},
 		discardChanges() {
-			// TODO: fix thi hack
+			// TODO: fix this hack
+			this.updatedText = this.originalText
 			this.originalText = this.originalText + " ";
 			this.showSubmit = false;
-		}
+		},
 	},
 
 	mounted() {

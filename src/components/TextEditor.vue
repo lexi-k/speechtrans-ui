@@ -6,7 +6,6 @@ v-container
 <script lang="ts">
 import { TextChunk } from "@/utils/chunk";
 import AsrClient from "@/utils/client";
-import { text } from "stream/consumers";
 import { PropType } from "vue";
 
 export default {

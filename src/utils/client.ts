@@ -72,12 +72,13 @@ class AsrClient {
 		const res = await this.post("/get_latest_text_chunks", {
 			versions: chunkVersions,
 		});
-		const update = {
-			textChunks: res.text_chunks,
-			versions: res.versions,
-		} as TextChunksUpdate;
+		return res.text_chunks as TextChunk[]
+		// const update = {
+		// 	textChunks: res.text_chunks,
+		// 	versions: res.versions,
+		// } as TextChunksUpdate;
 
-		return update;
+		// return update;
 	}
 
 	async updateTextChunk(chunk: TextChunk) {
