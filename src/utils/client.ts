@@ -1,9 +1,4 @@
-import {
-	TextChunk,
-	TextChunkVersions,
-	AudioChunk,
-	TextChunksUpdate,
-} from "./chunk";
+import { TextChunk, TextChunkVersions, AudioChunk } from "./chunk";
 import fetchRetry from "fetch-retry";
 
 const retryingFetch = fetchRetry(fetch);
@@ -72,13 +67,7 @@ class AsrClient {
 		const res = await this.post("/get_latest_text_chunks", {
 			versions: chunkVersions,
 		});
-		return res.text_chunks as TextChunk[]
-		// const update = {
-		// 	textChunks: res.text_chunks,
-		// 	versions: res.versions,
-		// } as TextChunksUpdate;
-
-		// return update;
+		return res.text_chunks as TextChunk[];
 	}
 
 	async updateTextChunk(chunk: TextChunk) {

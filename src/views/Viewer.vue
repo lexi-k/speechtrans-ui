@@ -1,6 +1,7 @@
 <template lang="pug">
 v-container
 	v-row(v-if="editorMode")
+		v-btn.toggleUpdates(:icon="toggleUpdatesIcon", @click="toggleUpdates")
 		v-btn.toggleEditor(
 			icon="mdi-text-box-outline",
 			@click="editorMode = !editorMode"
@@ -14,6 +15,7 @@ v-container
 				:textChunks="textChunks"
 			)
 	v-row(v-else)
+		v-btn.toggleUpdates(:icon="toggleUpdatesIcon", @click="toggleUpdates")
 		v-btn.toggleEditor(
 			icon="mdi-pencil-outline",
 			@click="editorMode = !editorMode"
@@ -34,7 +36,8 @@ export default {
 			client: new AsrClient({}),
 			textChunks: [] as TextChunk[],
 			updateTextInterval: 1000,
-			intervalId: 0,
+			updateIntervalId: 0,
+			toggleUpdatesIcon: "mdi-play",
 			editorMode: false,
 		};
 	},
@@ -66,10 +69,26 @@ export default {
 				behavior: "smooth",
 			});
 		},
+
+		toggleUpdates() {
+			if (!this.updateIntervalId) {
+				this.updateIntervalId = window.setInterval(
+					this.updateText,
+					this.updateTextInterval
+				);
+				this.toggleUpdatesIcon = "mdi-pause";
+				console.info("Started updating text.");
+			} else {
+				window.clearInterval(this.updateIntervalId);
+				this.updateIntervalId = 0;
+				this.toggleUpdatesIcon = "mdi-play";
+				console.info("Stopped updating text.");
+			}
+		},
 	},
 	async mounted() {
-
 		this.textChunks = await this.client.getLatestTextChunks({});
+		// Dummy debug text chunks
 		// this.textChunks = [
 		// 	{
 		// 		timestamp: 0,
@@ -112,11 +131,6 @@ export default {
 		// 		text: "Hello, my name is John. I am a student at the University of Applied Sciences in Munich. It is not a nice place to live but it is a nice place to study. Lorem Ipsum, sometimes referred to as lipsum, is the placeholder text used in design when creating content. It helps designers plan out where the content will sit, without needing to wait for the content to be written and approved.",
 		// 	},
 		// ];
-		let that = this;
-		this.intervalId = window.setInterval(async function () {
-			await that.updateText();
-		}, this.updateTextInterval);
-		console.log(this.intervalId);
 	},
 };
 </script>

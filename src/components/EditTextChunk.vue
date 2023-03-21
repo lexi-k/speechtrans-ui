@@ -43,14 +43,13 @@ export default {
 			originalText: "" as string,
 			updatedText: "" as string,
 			showSubmit: false,
+			highlightSpan:
+				"<span style='background-color: #E0D64E; color: black'>",
 		};
 	},
 	methods: {
 		submitTextChunk() {
 			if (this.updatedText !== this.originalText) {
-				// this.originalText =
-				// 	"<span style='color: red'>" + this.updatedText + "</span>";
-				// TODO: Diff this
 				this.client.updateTextChunk({
 					timestamp: this.chunk.timestamp,
 					version: this.chunk.version,
@@ -61,30 +60,22 @@ export default {
 		},
 		onInput(e: any) {
 			this.updatedText = e.target.innerHTML;
-			console.log(this.updatedText)
-			console.log(this.originalText)
+
 			if (this.updatedText != this.originalText) this.showSubmit = true;
 			else this.showSubmit = false;
-			// TODO: Change color
-			// TODO: Display *original* in some kind of dropdown
 		},
 		highlightFocused(e: any) {
-			this.chunk.text =
-				"<span style='background-color: #E0D64E; color: black'>" +
-				this.chunk.text +
-				"</span>";
+			this.chunk.text = this.highlightSpan + this.chunk.text + "</span>";
 		},
 		unhighlightFocused(e: any) {
 			this.chunk.text = this.chunk.text
-				.replace(
-					"<span style='background-color: #E0D64E; color: black'>",
-					""
-				)
+				.replace(this.highlightSpan, "")
 				.replace("</span>", "");
 		},
 		discardChanges() {
-			// TODO: fix this hack
-			this.updatedText = this.originalText
+			this.updatedText = this.originalText;
+			// Ugly hack to update displayed variable
+			// the space is discarded during html render
 			this.originalText = this.originalText + " ";
 			this.showSubmit = false;
 		},

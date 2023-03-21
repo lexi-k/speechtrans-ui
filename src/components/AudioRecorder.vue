@@ -1,7 +1,5 @@
 <template lang="pug">
-button#button1 START
-button#button2 SUSPEND
-button#button3 RESUME
+v-btn(@click="toggleRecording", :icon="recordingIcon")
 </template>
 
 <script lang="ts">
@@ -16,6 +14,8 @@ export default {
 			microphone: {} as MediaStream,
 			recorder: {} as AudioWorkletNode,
 			timestamp: 0,
+			recording: false,
+			recordingIcon: "mdi-microphone",
 		};
 	},
 	methods: {
@@ -59,39 +59,33 @@ export default {
 			await this.getMicrophone();
 			await this.createSource();
 
-			console.info("Started recording.");
-
 			this.recorder.port.onmessage = this.submitAudioChunk;
+			this.recording = true;
+
+			console.info("Started recording.");
+		},
+		async stopRecording() {
+			this.source.disconnect();
+			this.recorder.disconnect();
+			this.context.close();
+			this.recording = false;
+
+			console.info("Stopped recording.");
+		},
+		async toggleRecording() {
+			if (this.recording) {
+				await this.stopRecording();
+				this.recordingIcon = "mdi-microphone";
+			} else {
+				await this.startRecording();
+				this.recordingIcon = "mdi-stop";
+			}
 		},
 	},
 	props: {
 		asrClient: { type: AsrClient, required: true },
 		sampleRate: { type: Number, required: true },
 	},
-	mounted() {
-		// @ts-ignore
-		document
-			.getElementById("button1")
-			.addEventListener("click", this.startRecording);
-		// @ts-ignore
-		document
-			.getElementById("button2")
-			.addEventListener("click", function () {
-				// @ts-ignore
-				this.context.suspend().then(() => {
-					console.log("Playback suspended successfully");
-				});
-			});
-
-		// @ts-ignore
-		document
-			.getElementById("button3")
-			.addEventListener("click", function () {
-				// @ts-ignore
-				this.context.resume().then(() => {
-					console.log("Playback resumed successfully");
-				});
-			});
-	},
+	mounted() {},
 };
 </script>
