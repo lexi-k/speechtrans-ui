@@ -1,5 +1,6 @@
 <template lang="pug">
-v-btn(@click="toggleRecording", :icon="recordingIcon")
+v-card-text Record:
+	v-btn.recordButton(@click="toggleRecording", :icon="recordingIcon")
 </template>
 
 <script lang="ts">
@@ -7,6 +8,10 @@ import AsrClient from "@/utils/client";
 
 export default {
 	name: "audio-recorder",
+	props: {
+		asrClient: { type: AsrClient, required: true },
+		sampleRate: { type: Number, required: true },
+	},
 	data() {
 		return {
 			context: {} as AudioContext,
@@ -82,10 +87,5 @@ export default {
 			}
 		},
 	},
-	props: {
-		asrClient: { type: AsrClient, required: true },
-		sampleRate: { type: Number, required: true },
-	},
-	mounted() {},
 };
 </script>

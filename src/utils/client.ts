@@ -7,6 +7,7 @@ class AsrClient {
 	baseUrl: string;
 	headers: Headers;
 	session: string;
+	sessionId: string;
 	constructor({
 		baseUrl = "http://slt.ufal.mff.cuni.cz:5003",
 		additionalHeaders,
@@ -18,7 +19,8 @@ class AsrClient {
 	}) {
 		this.baseUrl = baseUrl;
 
-		this.session = `?session_id=${sessionId}`;
+		this.sessionId = sessionId;
+		this.session = `?session_id=${this.sessionId}`;
 
 		this.headers = new Headers(additionalHeaders);
 		this.headers.append("Content-Type", "application/json");
@@ -34,8 +36,8 @@ class AsrClient {
 				headers: this.headers,
 			}
 		);
-		if (response.ok) return response.json();
-		else console.log(response.statusText);
+		if (!response.ok) console.log(response.statusText);
+		return response.json();
 	}
 
 	async post(api: string, payload: object = {}) {
@@ -49,8 +51,28 @@ class AsrClient {
 				body: JSON.stringify(payload),
 			}
 		);
-		if (response.ok) return response.json();
-		else console.error(response.statusText);
+		if (!response.ok) console.error(response.statusText);
+		return response.json();
+	}
+
+	async setSessionId(sessionId: string) {
+		this.sessionId = sessionId;
+		this.session = `?session_id=${this.sessionId}`;
+	}
+
+	async createSession() {
+		const res = await this.get("/create_session");
+		return res.message;
+	}
+
+	async endSession() {
+		const res = await this.get("/end_session");
+		return res.message;
+	}
+
+	async getActiveSessions() {
+		const res = await this.get("/get_active_sessions");
+		return res.active_sessions as string[];
 	}
 
 	async submitAudioChunk(audioChunk: AudioChunk) {

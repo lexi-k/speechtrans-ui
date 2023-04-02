@@ -28,6 +28,7 @@ import "@/styles/editChunk.scss";
 import AsrClient from "@/utils/client";
 
 export default {
+	name: "edit-text-chunk",
 	props: {
 		client: {
 			type: Object as PropType<AsrClient>,
