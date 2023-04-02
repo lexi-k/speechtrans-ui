@@ -1,4 +1,10 @@
 <template lang="pug">
+v-text-field.selectSession(
+	v-model="sessionName",
+	variant="solo",
+	density="compact"
+)
+
 v-container
 	v-row(v-if="editorMode")
 		v-btn.toggleUpdates(:icon="toggleUpdatesIcon", @click="toggleUpdates")
@@ -35,6 +41,7 @@ export default {
 		return {
 			client: new AsrClient({}),
 			textChunks: [] as TextChunk[],
+			sessionName: "default",
 			updateTextInterval: 1000,
 			updateIntervalId: 0,
 			toggleUpdatesIcon: "mdi-play",
@@ -72,6 +79,8 @@ export default {
 
 		toggleUpdates() {
 			if (!this.updateIntervalId) {
+				this.client.setSessionId(this.sessionName);
+
 				this.updateIntervalId = window.setInterval(
 					this.updateText,
 					this.updateTextInterval
@@ -86,8 +95,8 @@ export default {
 			}
 		},
 	},
-	async mounted() {
-		this.textChunks = await this.client.getLatestTextChunks({});
+	// async mounted() {
+		// this.textChunks = await this.client.getLatestTextChunks({});
 		// Dummy debug text chunks
 		// this.textChunks = [
 		// 	{
@@ -131,6 +140,6 @@ export default {
 		// 		text: "Hello, my name is John. I am a student at the University of Applied Sciences in Munich. It is not a nice place to live but it is a nice place to study. Lorem Ipsum, sometimes referred to as lipsum, is the placeholder text used in design when creating content. It helps designers plan out where the content will sit, without needing to wait for the content to be written and approved.",
 		// 	},
 		// ];
-	},
+	// },
 };
 </script>

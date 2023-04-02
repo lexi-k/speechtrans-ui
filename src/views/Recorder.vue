@@ -9,7 +9,7 @@ v-text-field.idInput(
 	variant="solo",
 )
 
-audio-recorder(:asrClient="client", :sampleRate="sampleRate") \
+audio-recorder(:asrClient="client", :sampleRate="sampleRate")
 </template>
 
 <script lang="ts">
