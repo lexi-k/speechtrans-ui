@@ -13,7 +13,7 @@ v-container
 			@click="editorMode = !editorMode"
 		)
 		v-col
-			text-editor.editing(:textChunks="textChunks")
+			text-editor.editing(:client="client", :textChunks="textChunks")
 		v-col
 			text-viewer.editing(
 				:fontSize=17,

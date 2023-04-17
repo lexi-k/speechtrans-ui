@@ -15,15 +15,14 @@ import { PropType } from "vue";
 export default {
 	name: "text-editor",
 	props: {
+		client: {
+			type: Object as PropType<AsrClient>,
+			required: true,
+		},
 		textChunks: {
 			type: Array as PropType<TextChunk[]>,
 			required: true,
 		},
-	},
-	data() {
-		return {
-			client: new AsrClient({}),
-		};
 	},
 };
 </script>
